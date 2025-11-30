@@ -22,8 +22,11 @@ import {
   Announcement,
   AnnouncementTag,
   AnnouncementTitle,
-} from '../../components/ui/shadcn-io/announcement';
-import { ArrowUpRightIcon } from 'lucide-react';
+} from "../../components/ui/shadcn-io/announcement";
+import { ArrowUpRightIcon } from "lucide-react";
+import { Brush } from "lucide-react";
+import { Label } from "../../../components/ui/label";
+import { Switch } from "../../../components/ui/switch";
 
 type PeriodOption = "surprise" | "custom period" | "custom date";
 
@@ -85,13 +88,33 @@ const AnnouncementBanner = () => (
 );
 
 const AnnouncementPill = () => (
-    <Announcement className="bg-sky-100 text-sky-700" themed>
-      <AnnouncementTag>Info</AnnouncementTag>
-      <AnnouncementTitle>
-        Platform under construction
-        <ArrowUpRightIcon className="shrink-0 opacity-70" size={16} />
-      </AnnouncementTitle>
-    </Announcement>
+  <Announcement className="bg-sky-100 text-sky-700" themed>
+    <AnnouncementTag>Info</AnnouncementTag>
+    <AnnouncementTitle>
+      Platform under construction
+      <ArrowUpRightIcon className="shrink-0 opacity-70" size={16} />
+    </AnnouncementTitle>
+  </Announcement>
+);
+
+const CropEnhanceSwitch = () => (
+  <div className="flex items-start gap-3 rounded-lg border bg-background p-4">
+    <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-pastel-blue">
+      <Brush className="size-5 text-soft-black" />
+    </div>
+    <div className="flex flex-1 flex-col gap-1">
+      <div className="flex items-center justify-between gap-4">
+        <Label className="font-medium" htmlFor="feature-toggle">
+          Enable auto-crop & enhance
+        </Label>
+        <Switch id="feature-toggle" />
+      </div>
+      <p className="text-muted-foreground text-sm text-left">
+        Auto crops out photo strip and enhances it just like it had been
+        scanned.
+      </p>
+    </div>
+  </div>
 );
 
 export default function MainPage() {
@@ -177,10 +200,8 @@ export default function MainPage() {
             <h3 className="font-display text-xl font-bold text-soft-black mb-1">
               1. take photo/upload your photostrip
             </h3>
-            <p className="font-body text-grey text-xs mb-2">
-              we'll crop and enhance it for you automatically, no worries.
-            </p>
             <UploadImage />
+            <CropEnhanceSwitch />
 
             {/* Journal Caption */}
             <h3 className="font-display text-xl font-bold text-soft-black mt-6">
@@ -213,7 +234,7 @@ export default function MainPage() {
             >
               {isProcessing ? "Delivering..." : "Deliver to the Future!"}
             </button>
-            
+
             {/* Buy Me a Coffee Button */}
             <div className="mt-6 flex justify-center items-center w-full">
               <a
