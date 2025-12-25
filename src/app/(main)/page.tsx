@@ -168,48 +168,36 @@ export default function MainPage() {
     setAutoCropEnabled(false);
   };
 
-  // Upload image to RunPod and get cropped result
+  // Upload image to API route for processing
   const processImageWithRunPod = async (
     base64Image: string
   ): Promise<string> => {
-    const apiKey = process.env.NEXT_RUNPOD_API_KEY;
-    const endpointId = process.env.NEXT_RUNPOD_ENDPOINT_ID;
-    const url = `https://api.runpod.ai/v2/${endpointId}/runsync`;
-
-    // Remove data URL prefix if present
-    const base64Data = base64Image.split(",")[1] || base64Image;
-
-    const requestConfig = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        input: {
-          image: base64Data,
-        },
-      }),
-    };
-
     try {
-      const response = await fetch(url, requestConfig);
+      const response = await fetch('/api/crop-image', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          image: base64Image,
+        }),
+      });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log("RunPod response:", data);
+      console.log('Crop API response:', data);
 
-      // Extract the cropped image from output.photostrip
-      if (data.output?.photostrip) {
-        return `data:image/png;base64,${data.output.photostrip}`;
+      if (data.photostrip) {
+        return `data:image/png;base64,${data.photostrip}`;
       } else {
-        throw new Error("No photostrip in response");
+        throw new Error('No photostrip in response');
       }
     } catch (error) {
-      console.error("RunPod processing error:", error);
+      console.error('Image processing error:', error);
       throw error;
     }
   };
