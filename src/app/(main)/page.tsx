@@ -230,7 +230,8 @@ export default function MainPage() {
         console.log("Image cropped successfully");
       } catch (error) {
         console.error("Failed to crop image:", error);
-        alert("Failed to crop image. Please try again.");
+        const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
+        alert(`Failed to crop image: ${errorMessage}\n\nPlease try again.`);
         setAutoCropEnabled(false);
       } finally {
         setIsCropping(false);
