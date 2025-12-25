@@ -20,7 +20,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "ReReel - Digitize Your Photostrip Memories",
+  title: "ReStrip - Digitize Your Photostrip Memories",
   description: "Transform your photostrip memories into digital treasures. A small memory that returns when you least expect it.",
 };
 
